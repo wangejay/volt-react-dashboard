@@ -1,4 +1,3 @@
-
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faArrowDown, faArrowUp, faEdit, faEllipsisH, faExternalLinkAlt, faEye, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +8,9 @@ import { Routes } from "../routes";
 import { pageVisits, pageTraffic, pageRanking } from "../data/tables";
 import transactions from "../data/transactions";
 import commands from "../data/commands";
+import { getLinxdotUpdateInfo } from "../actions/linxdot";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const ValueChange = ({ value, suffix }) => {
   const valueIcon = value < 0 ? faAngleDown : faAngleUp;
@@ -188,7 +190,16 @@ export const RankingTable = () => {
 };
 
 export const TransactionsTable = () => {
+  const dispatch = useDispatch()
+  const selectState = ({ linxdotUpdateInfo }) => linxdotUpdateInfo
+  const { loading, error, data: linxdotUpdateInfo } = useSelector(selectState)
+
+  useEffect(() => {
+    dispatch(getLinxdotUpdateInfo())
+  })
+
   const totalTransactions = transactions.length;
+  
 
   const TableRow = (props) => {
     const { invoiceNumber, subscription, price, issueDate, dueDate, status } = props;
