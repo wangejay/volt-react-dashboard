@@ -52,6 +52,7 @@
     "react-scripts": "3.4.3",
     "react-transition-group": "^4.4.1",
     "redux": "^4.2.0",
+    "redux-thunk": "^2.4.1",
     "simplebar-react": "^2.3.0"
   },
   "scripts": {

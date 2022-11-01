@@ -1,6 +1,8 @@
-import { combineReducers } from "redux"
+import { combineReducers, createStore } from "redux"
 import linxdotUpdateInfo from "../reducers/linxdot"
 
-export default combineReducers({
+const reducers = combineReducers({
   linxdotUpdateInfo
 })
+
+export default reducers

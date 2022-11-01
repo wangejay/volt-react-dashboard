@@ -14,6 +14,7 @@ export const getLinxdotUpdateInfo = () => async (dispatch) => {
     })
     console.log(res)
   } catch (error) {
+    console.log(error)
     dispatch({
       type: types.GET_LINXDOT_UPDATE_INFO_FAILURE,
       payload: { loading: false, error: error }

@@ -12,6 +12,8 @@ import { getLinxdotUpdateInfo } from "../actions/linxdot";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
+import linxdots from "../data/linxdot";
+
 const ValueChange = ({ value, suffix }) => {
   const valueIcon = value < 0 ? faAngleDown : faAngleUp;
   const valueTxtColor = value < 0 ? "text-danger" : "text-success";
@@ -192,51 +194,44 @@ export const RankingTable = () => {
 export const TransactionsTable = () => {
   const dispatch = useDispatch()
   const selectState = ({ linxdotUpdateInfo }) => linxdotUpdateInfo
-  const { loading, error, data: linxdotUpdateInfo } = useSelector(selectState)
+  //const { loading, error, data: linxdotUpdateInfo } = useSelector(selectState)
 
   useEffect(() => {
     dispatch(getLinxdotUpdateInfo())
   })
 
-  const totalTransactions = transactions.length;
-  
+  console.log(linxdots)
+
+  const totalLinxdots = linxdots.length
+
 
   const TableRow = (props) => {
-    const { invoiceNumber, subscription, price, issueDate, dueDate, status } = props;
-    const statusVariant = status === "Paid" ? "success"
-      : status === "Due" ? "warning"
-        : status === "Canceled" ? "danger" : "primary";
+    const { app_bin_sha1, app_bin_url, app_name, assets, tag_version } = props;
 
     return (
       <tr>
         <td>
           <Card.Link as={Link} to={Routes.Invoice.path} className="fw-normal">
-            {invoiceNumber}
+            {app_name}
           </Card.Link>
         </td>
         <td>
           <span className="fw-normal">
-            {subscription}
+            {tag_version}
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {issueDate}
+            {app_bin_url}
           </span>
         </td>
         <td>
           <span className="fw-normal">
-            {dueDate}
+            {app_bin_sha1}
           </span>
         </td>
         <td>
-          <span className="fw-normal">
-            ${parseFloat(price).toFixed(2)}
-          </span>
-        </td>
-        <td>
-          <span className={`fw-normal text-${statusVariant}`}>
-            {status}
+          <span className={`fw-normal text-${"statusVariant"}`}>
           </span>
         </td>
         <td>
@@ -269,17 +264,16 @@ export const TransactionsTable = () => {
         <Table hover className="user-table align-items-center">
           <thead>
             <tr>
-              <th className="border-bottom">#</th>
-              <th className="border-bottom">Bill For</th>
-              <th className="border-bottom">Issue Date</th>
-              <th className="border-bottom">Due Date</th>
-              <th className="border-bottom">Total</th>
+              <th className="border-bottom">App name</th>
+              <th className="border-bottom">Version</th>
+              <th className="border-bottom">App Bin URL</th>
+              <th className="border-bottom">App Bin SHA1</th>
               <th className="border-bottom">Status</th>
               <th className="border-bottom">Action</th>
             </tr>
           </thead>
           <tbody>
-            {transactions.map(t => <TableRow key={`transaction-${t.invoiceNumber}`} {...t} />)}
+            {linxdots.map(linxdot => <TableRow key={`${linxdot.app_bin_sha1}`} {...linxdot} />)}
           </tbody>
         </Table>
         <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
@@ -299,7 +293,7 @@ export const TransactionsTable = () => {
             </Pagination>
           </Nav>
           <small className="fw-bold">
-            Showing <b>{totalTransactions}</b> out of <b>25</b> entries
+            Showing <b>{totalLinxdots}</b> out of <b>25</b> entries
           </small>
         </Card.Footer>
       </Card.Body>
